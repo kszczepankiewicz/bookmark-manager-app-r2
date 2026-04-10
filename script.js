@@ -61,13 +61,11 @@ addBookmarkButtonForm.addEventListener('click', (e) => {
 
 const displayOrHideCategory = () => displaySection(mainSection.classList.contains('hidden') ? mainSection : bookmarkListSection);
 
-const renderBookmarks = filtered => filtered.map(({ name, url }) => `<input type='radio' id='${name}' value='${name}' name='${categoryDropdown.value}' ><label for='${name}'><a href='${url}'>${name}</a></label>`).join('\n') || '<p>No Bookmarks Found</p>';
-
-const filterBookmarks = () => getBookmarks().filter(({ category }) => category === categoryDropdown.value);
+const renderBookmarks = () => getBookmarks().filter(({ category }) => category === categoryDropdown.value).map(({ name, url }) => `<input type='radio' id='${name}' value='${name}' name='${categoryDropdown.value}' ><label for='${name}'><a href='${url}'>${name}</a></label>`).join('\n') || '<p>No Bookmarks Found</p>';
 
 viewCategoryButton.addEventListener('click', (e) => {
     displayOrHideCategory();
-    categoryList.innerHTML = renderBookmarks(filterBookmarks());
+    categoryList.innerHTML = renderBookmarks();
 });
 
 closeListButton.addEventListener('click', (e) => displaySection(mainSection.classList.contains('hidden') ? mainSection : bookmarkListSection));
@@ -83,5 +81,5 @@ deleteBookmarkButton.addEventListener('click', (e) => {
     if (index === -1) return;
     bookmarks.splice(index, 1);
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-    categoryList.innerHTML = renderBookmarks(filterBookmarks());
+    categoryList.innerHTML = renderBookmarks();
 });

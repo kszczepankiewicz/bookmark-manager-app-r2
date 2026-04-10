@@ -34,7 +34,7 @@ const getBookmarks = () => {
 }
 
 const displaySection = section => {
-    const sections = [mainSection, formSection];
+    const sections = [mainSection, formSection, bookmarkListSection];
     sections.forEach(s => s.classList.add('hidden'));
 
     section.classList.remove('hidden');
@@ -60,9 +60,16 @@ addBookmarkButtonForm.addEventListener('click', (e) => {
 
 const displayOrHideCategory = () => displaySection(mainSection.classList.contains('hidden') ? mainSection : bookmarkListSection);
 
+const renderBookmarks = filtered => filtered.map(({ name, url }) => `<input type='radio' id='${name}' value='${name}' name='${categoryDropdown.value}' >`).join('\n');
+
+
 viewCategoryButton.addEventListener('click', (e) => {
     debugger
-    const bookmarks = getBookmarks().filter(obj => obj.category === categoryDropdown.value);
-    // const bookmarks = getBookmarks().filter(({ category }) => category === categoryDropdown.value);
-    if (!bookmarks.length) categoryList.innerHTML = `<p>No Bookmarks Found</p>`;
+    displayOrHideCategory();
+    const filtered = getBookmarks().filter(({ category }) => category === categoryDropdown.value);
+    if (!filtered.length) {
+        categoryList.innerHTML = '<p>No Bookmarks Found</p>';
+        return;
+    }
+    categoryList.innerHTML = renderBookmarks(filtered);
 });

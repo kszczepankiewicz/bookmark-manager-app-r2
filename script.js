@@ -38,7 +38,6 @@ const getBookmarks = () => {
 const displaySection = section => {
     const sections = [mainSection, formSection, bookmarkListSection];
     sections.forEach(s => s.classList.add('hidden'));
-
     section.classList.remove('hidden');
 }
 
@@ -68,18 +67,12 @@ const filterBookmarks = () => getBookmarks().filter(({ category }) => category =
 
 viewCategoryButton.addEventListener('click', (e) => {
     displayOrHideCategory();
-    const filtered = filterBookmarks();
-    if (!filtered.length) {
-        categoryList.innerHTML = '<p>No Bookmarks Found</p>';
-        return;
-    }
-    categoryList.innerHTML = renderBookmarks(filtered);
+    categoryList.innerHTML = renderBookmarks(filterBookmarks());
 });
 
 closeListButton.addEventListener('click', (e) => displaySection(mainSection.classList.contains('hidden') ? mainSection : bookmarkListSection));
 
 deleteBookmarkButton.addEventListener('click', (e) => {
-    debugger
     const bookmarks = getBookmarks();
     const bookmarkToDelete = document.querySelector('input[type="radio"]:checked');
     if (!bookmarkToDelete) {
